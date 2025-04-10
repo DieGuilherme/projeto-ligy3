@@ -11,8 +11,8 @@ from PyPDF2 import PdfReader, PdfWriter
 
 # Registrar fonte Montserrat (certifique-se que os arquivos .ttf estão disponíveis)
 try:
-    pdfmetrics.registerFont(TTFont("Montserrat", "Montserrat-Regular.ttf"))
-    pdfmetrics.registerFont(TTFont("Montserrat-Bold", "Montserrat-Bold.ttf"))
+    pdfmetrics.registerFont(TTFont("Montserrat", "assets/Montserrat-Regular.ttf"))
+    pdfmetrics.registerFont(TTFont("Montserrat-Bold", "assets/Montserrat-Bold.ttf"))
 except:
     pass  # fallback silencioso para ambientes onde a fonte não está disponível
 
