@@ -93,7 +93,7 @@ if st.button("📄 Gerar Faturas em PDF (ZIP)"):
     from _gerador_de_faturas import gerar_faturas_em_zip
 
     df_ok = df_temp[df_temp["farol"] == "OK"]
-        zip_path = gerar_faturas_em_zip(df_ok)
+    zip_path = gerar_faturas_em_zip(df_ok)
 
 with open(zip_path, "rb") as f:
-       st.download_button("📥 Baixar Faturas", f, file_name="faturas_ligy.zip")
+    st.download_button("📥 Baixar Faturas", f, file_name="faturas_ligy.zip")
