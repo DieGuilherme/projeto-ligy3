@@ -102,6 +102,8 @@ def gerar_faturas_em_zip(df_ok, pdf_modelo_path="assets/Fatura_Ligy_bco.pdf", ou
             pdf_out.write(f)
         gerados.append(nome_arquivo)
 
+    print(f"✔️ PDF salvo: {nome_arquivo} - tamanho: {os.path.getsize(nome_arquivo)} bytes")
+
     # Compactar os arquivos gerados
     zip_path = os.path.join(output_dir, "faturas_ligy.zip")
     with zipfile.ZipFile(zip_path, "w") as zipf:
