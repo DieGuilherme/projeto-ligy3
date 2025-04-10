@@ -60,14 +60,24 @@ estilos = {
 def gerar_faturas_em_zip(df_ok, pdf_modelo_path="assets/Fatura_Ligy_bco.pdf", output_dir="faturas_individuais"):
     os.makedirs(output_dir, exist_ok=True)
 
-    for _, row in df_ok.iterrows():
+    gerados = []
+
+    for idx, row in df_ok.iterrows():
+        cliente_ref = str(row.get("cliente_ref", "")).strip()
+        if not cliente_ref or cliente_ref.lower() == "nan":
+            continue  # pula entradas inválidas
+
         packet = BytesIO()
         c = canvas.Canvas(packet, pagesize=A4)
 
         for field, (x, y) in field_positions.items():
             valor = str(row.get(field, ""))
             estilo = estilos.get(field, {"font": "Helvetica", "size": 10, "color": HexColor("#000000")})
-            c.setFont(estilo["font"], estilo["size"])
+
+            try:
+                c.setFont(estilo["font"], estilo["size"])
+            except:
+                c.setFont("Helvetica", estilo["size"])
             c.setFillColor(estilo["color"])
 
             if field in right_aligned_fields:
@@ -86,15 +96,16 @@ def gerar_faturas_em_zip(df_ok, pdf_modelo_path="assets/Fatura_Ligy_bco.pdf", ou
         pdf_out = PdfWriter()
         pdf_out.add_page(base_page)
 
-        nome_arquivo = os.path.join(output_dir, f"Fatura_{row['cliente_ref'].replace(' ', '_')}.pdf")
+        nome_base = f"Fatura_{cliente_ref.replace(' ', '_').replace('/', '_')}.pdf"
+        nome_arquivo = os.path.join(output_dir, nome_base)
         with open(nome_arquivo, "wb") as f:
             pdf_out.write(f)
+        gerados.append(nome_arquivo)
 
     # Compactar os arquivos gerados
     zip_path = os.path.join(output_dir, "faturas_ligy.zip")
     with zipfile.ZipFile(zip_path, "w") as zipf:
-        for nome_pdf in os.listdir(output_dir):
-            if nome_pdf.endswith(".pdf") and nome_pdf.startswith("Fatura_"):
-                zipf.write(os.path.join(output_dir, nome_pdf), arcname=nome_pdf)
+        for caminho_pdf in gerados:
+            zipf.write(caminho_pdf, arcname=os.path.basename(caminho_pdf))
 
     return zip_path
