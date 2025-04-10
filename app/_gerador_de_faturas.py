@@ -57,7 +57,7 @@ estilos = {
     "economia_percebida": {"font": "Montserrat", "size": 10, "color": HexColor("#FFFFFF")},
 }
 
-def gerar_faturas_em_zip(df_ok, pdf_modelo_path="Fatura_Ligy_bco.pdf", output_dir="faturas_individuais"):
+def gerar_faturas_em_zip(df_ok, pdf_modelo_path="assets/Fatura_Ligy_bco.pdf", output_dir="faturas_individuais"):
     os.makedirs(output_dir, exist_ok=True)
 
     for _, row in df_ok.iterrows():
