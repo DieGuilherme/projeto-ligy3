@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import locale
-locale.setlocale(locale.LC_TIME, "Portuguese_Brazil.1252")
+
 
 #def autenticar():
 #    usuarios = {"ligyadmin": "2707"}  # simples para demo
@@ -33,6 +32,13 @@ st.markdown("Envie o arquivo Excel com as abas `Faturamento`, `temp` e `auxiliar
 
 uploaded_file = st.file_uploader("Selecione o arquivo .xlsx", type=["xlsx"])
 
+mapa_meses = {
+    1: "Janeiro", 2: "Fevereiro", 3: "Março",
+    4: "Abril", 5: "Maio", 6: "Junho",
+    7: "Julho", 8: "Agosto", 9: "Setembro",
+    10: "Outubro", 11: "Novembro", 12: "Dezembro"
+}
+
 if uploaded_file:
     # Carregar planilhas
     df_faturamento = pd.read_excel(uploaded_file, sheet_name="Faturamento", header=1)
@@ -41,7 +47,7 @@ if uploaded_file:
 
     # Etapas do processamento
     df_temp["cliente_ref"] = df_temp["nome"].astype(str) + " | " + pd.to_datetime(df_temp["ref_fat_cli"]).dt.strftime('%Y_%m')
-    df_temp["ref.mes"] = pd.to_datetime(df_temp["ref_fat_cli"]).dt.strftime("%B")
+    df_temp["ref.mes"] = pd.to_datetime(df_temp["ref_fat_cli"]).dt.month.map(mapa_meses)
     df_temp["ref.ano"] = pd.to_datetime(df_temp["ref_fat_cli"]).dt.strftime("%Y")
 
     df_aux_transposed = df_aux.set_index(df_aux.columns[0]).T
