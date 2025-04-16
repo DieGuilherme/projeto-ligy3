@@ -82,8 +82,8 @@ if uploaded_file:
     df_temp["s_ligy"] = df_temp["fat_enel_s_gd"]
     df_temp["c_ligy"] = round(df_temp["val_cons_final"] + df_temp["Valor_Ligy"],2)
     df_temp["economia_real"] = round(df_temp["s_ligy"] - df_temp["c_ligy"],2)
-    df_temp["economia_percebida"] = np.where(df_temp["s_ligy"] == 0,
-                                            0, df_temp["economia_real"]/df_temp["s_ligy"])
+    df_temp["economia_percebida"] = round(np.where(df_temp["s_ligy"] == 0,
+                                            0, df_temp["economia_real"]/df_temp["s_ligy"]),2)+'%'
     df_temp["carbono"] = round((df_temp["consumo (kWh)"]*0.09) - (df_temp["consumo (kWh)"]*0.0305),2)
     df_temp["fatura_ligy"] = round(df_temp["benef_gd"] - df_temp["benef_ligy"],2)
     df_temp["dif"] = df_temp["fatura_enel_real"] - df_temp["val_cons_final"]
