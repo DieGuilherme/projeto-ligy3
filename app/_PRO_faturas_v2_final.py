@@ -40,7 +40,7 @@ if uploaded_file:
 
     # Etapas do processamento
     df_temp["cliente_ref"] = df_temp["nome"].astype(str) + " | " + pd.to_datetime(df_temp["ref_fat_cli"]).dt.strftime('%Y_%m')
-    df_temp["ref.mes"] = pd.to_datetime(df_temp["ref_fat_cli"]).dt.strftime("%mmm")
+    df_temp["ref.mes"] = pd.to_datetime(df_temp["ref_fat_cli"]).dt.strftime("%B")
     df_temp["ref.ano"] = pd.to_datetime(df_temp["ref_fat_cli"]).dt.strftime("%Y")
 
     df_aux_transposed = df_aux.set_index(df_aux.columns[0]).T
