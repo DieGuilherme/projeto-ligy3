@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-
+import locale
+locale.setlocale(locale.LC_TIME, "Portuguese_Brazil.1252")
 
 #def autenticar():
 #    usuarios = {"ligyadmin": "2707"}  # simples para demo
