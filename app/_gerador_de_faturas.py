@@ -59,13 +59,12 @@ estilos = {
 
 def gerar_faturas_em_zip(df_ok, pdf_modelo_path="assets/Fatura_Ligy_bco.pdf", output_dir="faturas_individuais"):
     os.makedirs(output_dir, exist_ok=True)
-
     gerados = []
 
     for idx, row in df_ok.iterrows():
         cliente_ref = str(row.get("cliente_ref", "")).strip()
         if not cliente_ref or cliente_ref.lower() == "nan":
-            continue  # pula entradas inválidas
+            continue
 
         packet = BytesIO()
         c = canvas.Canvas(packet, pagesize=A4)
@@ -100,14 +99,15 @@ def gerar_faturas_em_zip(df_ok, pdf_modelo_path="assets/Fatura_Ligy_bco.pdf", ou
         nome_arquivo = os.path.join(output_dir, nome_base)
         with open(nome_arquivo, "wb") as f:
             pdf_out.write(f)
+        
+        print(f"✔️ PDF salvo: {nome_arquivo} - tamanho: {os.path.getsize(nome_arquivo)} bytes")
         gerados.append(nome_arquivo)
-
-    print(f"✔️ PDF salvo: {nome_arquivo} - tamanho: {os.path.getsize(nome_arquivo)} bytes")
 
     # Compactar os arquivos gerados
     zip_path = os.path.join(output_dir, "faturas_ligy.zip")
-    with zipfile.ZipFile(zip_path, "w") as zipf:
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
         for caminho_pdf in gerados:
             zipf.write(caminho_pdf, arcname=os.path.basename(caminho_pdf))
 
+    print(f"📦 Arquivo ZIP criado com sucesso: {zip_path}")
     return zip_path
