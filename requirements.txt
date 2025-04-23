@@ -5,3 +5,6 @@ numpy
 openpyxl
 reportlab
 PyPDF2
+gspread
+oauth2client
+gspread_dataframe
