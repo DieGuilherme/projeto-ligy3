@@ -3,9 +3,13 @@ import pandas as pd
 import numpy as np
 import json
 
-google_creds = st.secrets["google"]
+google_creds = {
+    k: v.replace("\\n", "\n") if isinstance(v, str) else v
+    for k, v in dict(st.secrets["google"]).items()
+}
 with open("credentials.json", "w") as f:
-    json.dump({k: v.replace("\\n", "\n") if isinstance(v, str) else v for k, v in dict(google_creds).items()}, f)
+    json.dump(google_creds, f)
+
 
 #def autenticar():
 #    usuarios = {"ligyadmin": "2707"}  # simples para demo
