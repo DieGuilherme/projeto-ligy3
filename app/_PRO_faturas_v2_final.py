@@ -5,7 +5,7 @@ import json
 
 google_creds = st.secrets["google"]
 with open("credentials.json", "w") as f:
-    json.dump(dict(google_creds), f)
+    json.dump({k: v.replace("\\n", "\n") if isinstance(v, str) else v for k, v in dict(google_creds).items()}, f)
 
 #def autenticar():
 #    usuarios = {"ligyadmin": "2707"}  # simples para demo
